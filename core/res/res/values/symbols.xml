@@ -2370,4 +2370,7 @@
   <java-symbol type="bool" name="config_protocol_errors_perm_failure" />
 
   <java-symbol type="bool" name="config_wifiApFirmwareReload" />
+
+  <!-- Package Manager -->
+  <java-symbol type="array" name="config_disabledComponents" />
 </resources>
