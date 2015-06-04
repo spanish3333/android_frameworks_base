@@ -42,6 +42,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.drm.OmaDrmHelper;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -621,6 +622,7 @@ public class DirectoryFragment extends Fragment {
             }
         }
 
+        boolean allfowd = true;
         if (docsForSend.size() == 1) {
             final DocumentInfo doc = docsForSend.get(0);
 
@@ -629,7 +631,9 @@ public class DirectoryFragment extends Fragment {
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.setType(doc.mimeType);
             intent.putExtra(Intent.EXTRA_STREAM, doc.derivedUri);
-
+            if (OmaDrmHelper.isDrmFile(doc.displayName)) {
+                allfowd = false;
+            }
         } else if (docsForSend.size() > 1) {
             intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -640,6 +644,9 @@ public class DirectoryFragment extends Fragment {
             for (DocumentInfo doc : docsForSend) {
                 mimeTypes.add(doc.mimeType);
                 uris.add(doc.derivedUri);
+                if (OmaDrmHelper.isDrmFile(doc.displayName)) {
+                    allfowd = false;
+                }
             }
 
             intent.setType(findCommonMimeType(mimeTypes));
@@ -648,7 +655,10 @@ public class DirectoryFragment extends Fragment {
         } else {
             return;
         }
-
+        if (!allfowd) {
+          Toast.makeText(getActivity(), R.string.no_permission_for_drm, Toast.LENGTH_SHORT).show();
+          return;
+        }
         intent = Intent.createChooser(intent, getActivity().getText(R.string.share_via));
         startActivity(intent);
     }
