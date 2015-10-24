@@ -71,7 +71,7 @@ public class RotationLockTile extends QSTile<QSTile.BooleanState> {
     @Override
     protected void handleLongClick() {
         intent.setClassName("com.android.settings",
-            "com.android.settings.Settings$DisplayRotationSettingsActivity");
+            "com.android.settings.Settings$DisplaySettingsActivity");
         mHost.startActivityDismissingKeyguard(intent);
     }
 
