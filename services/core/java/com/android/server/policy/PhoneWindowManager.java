@@ -581,6 +581,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     int mOverscanRight = 0;
     int mOverscanBottom = 0;
 
+    // Panel Orientation default portrait
+    private int mPanelOrientation = Surface.ROTATION_0;
+
     // What we do when the user long presses on home
     private int mLongPressOnHomeBehavior;
 
@@ -1598,7 +1601,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             return;
         }
         mDisplay = display;
-
+        mPanelOrientation =
+            SystemProperties.getInt("persist.panel.orientation", 0) / 90;
         final Resources res = mContext.getResources();
         int shortSize, longSize;
         if (width > height) {
@@ -2665,6 +2669,19 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             Log.d(TAG, "interceptKeyTi keyCode=" + keyCode + " down=" + down + " repeatCount="
                     + repeatCount + " keyguardOn=" + keyguardOn + " mHomePressed=" + mHomePressed
                     + " canceled=" + canceled);
+        }
+
+        // If the boot mode is power off alarm, we should not dispatch the several physical keys
+        // in power off alarm UI to avoid pausing power off alarm UI.
+        int isPowerOffAlarmMode = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.POWER_OFF_ALARM_MODE, 0);
+        if (DEBUG_INPUT) { Log.d(TAG, "intercept Dispatching isPowerOffAlarmMode = " +
+                isPowerOffAlarmMode); }
+
+        if (isPowerOffAlarmMode == 1 && (keyCode == KeyEvent.KEYCODE_HOME
+                || keyCode == KeyEvent.KEYCODE_SEARCH
+                || keyCode == KeyEvent.KEYCODE_MENU)) {
+            return -1;  // ignore the physical key here
         }
 
         // If we think we might have a volume down & power key chord on the way
@@ -5996,7 +6013,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     if (preferredRotation >= 0) {
                         return preferredRotation;
                     }
-                    return Surface.ROTATION_0;
+                    return mPanelOrientation;
             }
         }
     }
