@@ -628,9 +628,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     // Panel Orientation default portrait
     private int mPanelOrientation = Surface.ROTATION_0;
 
-    // What we do when the user long presses on home
-    private int mLongPressOnHomeBehavior;
-
     // What we do when the user double-taps on home
     private int mDoubleTapOnHomeBehavior;
 
