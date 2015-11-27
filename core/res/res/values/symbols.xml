@@ -2396,4 +2396,6 @@
   <java-symbol type="string" name="def_wifi_wifihotspot_pass" />
   <java-symbol type="string" name="def_wifi_direct_name" />
   <java-symbol type="string" name="def_custom_bt_defname" />
+
+  <java-symbol type="bool" name="config_useSystemClockforSensors" />
 </resources>
