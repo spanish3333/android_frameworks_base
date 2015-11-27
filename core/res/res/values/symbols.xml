@@ -2397,4 +2397,6 @@
   <!-- keypress optimization -->
   <java-symbol type="bool" name="config_enableKeypressOptimization" />
   <java-symbol type="array" name="keypress_param_value" />
+
+  <java-symbol type="bool" name="config_useSystemClockforSensors" />
 </resources>
