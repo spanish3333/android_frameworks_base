@@ -2340,4 +2340,9 @@
     <!-- Configuration that determines if PROTOCOL_ERRORS is to be treated as a
          permanent error -->
     <bool translatable="false" name="config_protocol_errors_perm_failure">true</bool>
+
+    <!-- Older sensors are not setting event.timestamp correctly.  Setting to
+          true will use SystemClock.elapsedRealtimeNanos() to set timestamp-->
+    <bool name="config_useSystemClockforSensors">false</bool>
+
 </resources>
